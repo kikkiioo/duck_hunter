@@ -34,7 +34,7 @@ class UIMainWindow:
                     "Sniff1": [self.sniff5,self.sniff6],
                     "Jump": [self.jump1,self.jump2,self.jump3]}
 
-        self.dogActor = Dog(Xpos = 10, Ypos=320,State= 'Sniff')
+        self.dogActor = Dog(Xpos = 10, Ypos =320, state = 'Sniff')
 
     def start_main_loop(self):
         self.__init__(self)
