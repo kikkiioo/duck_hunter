@@ -9,6 +9,7 @@ import time
 from sys import exit
 from typing import List
 
+
 from models.Dog import Dog
 
 
@@ -33,7 +34,7 @@ class UIMainWindow:
         self.dogDict = {"Sniff": [self.sniff1,self.sniff2,self.sniff3,self.sniff4],
                     "Sniff1": [self.sniff5,self.sniff6],
                     "Jump": [self.jump1,self.jump2,self.jump3]}
-
+        
         self.dogActor = Dog(Xpos = 10, Ypos =320, state = 'Sniff')
 
     def start_main_loop(self):
