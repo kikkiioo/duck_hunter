@@ -1,12 +1,11 @@
-import dataclasses
-from pydantic import DataclassTypeError, dataclasses
+from pydantic.dataclasses import dataclass
 from dataclasses_json import dataclass_json
 
 from models.Actor import Actor
 from models.EnumPlayerState import EnumPlayerState
 
 @dataclass_json
-@dataclasses 
+@dataclass 
 class Player(Actor):
     state: EnumPlayerState.Nothing
     shotCount: int = 0

@@ -1,6 +1,4 @@
-import dataclasses
 import enum
-
 
 @enum
 class EnumDogState:

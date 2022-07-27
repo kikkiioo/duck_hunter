@@ -1,14 +1,13 @@
-import dataclasses
 import string
 from tokenize import Double
-from pydantic import DataclassTypeError, dataclasses
+from pydantic.dataclasses import dataclass
 from dataclasses_json import dataclass_json
 
 from models.Actor import Actor
 from models.EnumDuckState import EnumDuckState
 
 @dataclass_json
-@dataclasses
+@dataclass
 class Duck(Actor):
     state: EnumDuckState.Nothing
     flyingSpeed: Double = 0

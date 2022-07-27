@@ -12,9 +12,9 @@ class ActorsController:
     @staticmethod
     def execute_move(self,actor):
 
-        if isinstance(self.actor,Dog):
+        if isinstance(actor,Dog):
             if actor.State == 'Sniff':
                 DogController.sniff(UIMainWindow.dogActor)
-                self.actor.State = 'Jump'
+                actor.State = 'Jump'
             if actor.State == 'Jump':   
                 DogController.jump(UIMainWindow.dogActor)

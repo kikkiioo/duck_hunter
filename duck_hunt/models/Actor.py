@@ -1,10 +1,9 @@
-import dataclasses
-import pydantic
+from pydantic.dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from tokenize import Double
 
 @dataclass_json
-@dataclasses 
-class Actor():
+@dataclass
+class Actor:
     xPos: Double = 0
     yPos: Double = 0
