@@ -5,5 +5,5 @@ from tokenize import Double
 @dataclass_json
 @dataclass
 class Actor:
-    xPos: Double = 0
-    yPos: Double = 0
+    xPos: Double = 0.0
+    yPos: Double = 0.0

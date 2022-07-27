@@ -1,21 +1,13 @@
-from cgi import test
+
 from enum import Enum
 import enum
-from multiprocessing.dummy import Array
-from pickle import FALSE
 import string
-from telnetlib import GA
 from time import time
-from types import NoneType
 from dacite import Dict
 import pygame
 import time
 from sys import exit
-from dataclasses import dataclass, field
-from dataclasses_json import dataclass_json
 from typing import List
-
-from sympy import fps
 
 from models.Dog import Dog
 
