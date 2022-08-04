@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import enum
 
 
-@enum
+
 class EnumDogState:
     Nothing = 'None'
     Sniff = 'Sniff'

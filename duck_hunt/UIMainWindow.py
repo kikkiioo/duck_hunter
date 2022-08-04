@@ -10,6 +10,9 @@ from sys import exit
 from typing import List
 
 
+
+from controllers.ActorController import ActorsController
+from controllers.GameController import GameController
 from models.Dog import Dog
 
 
@@ -41,8 +44,8 @@ class UIMainWindow:
         self.__init__(self)
         self.displayGraphics(self)
 
-        #self.game = Game(1,0,3,None)
-        #ActorsController.execute_move(UIMainWindow.dogActor)
+        self.game = GameController(1,0,3,None)
+        ActorsController.execute_move(UIMainWindow.dogActor)
    
 
         while True:
