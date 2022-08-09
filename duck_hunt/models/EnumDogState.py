@@ -1,12 +1,18 @@
-from dataclasses import dataclass
 import enum
+from enum import Enum
 
 
+class EnumDogState(str, Enum):
+    NOTHING = 'None'
+    SNIFF = 'Sniff'
+    SNIFF1 = 'Sniff1'
+    LOOK = 'Look'
+    JUMP_UP = 'JumpUp'
+    JUMP_DOWN = 'JumpDown'
+    CATCHUP = 'CatchUp'
+    CATCHDOWN = 'CatchDown'
+    GIGGLE = 'Giggle'
 
-class EnumDogState:
-    Nothing = 'None'
-    Sniff = 'Sniff'
-    Jump = 'Jump'
-    Catch = 'Catch'
-    Giggle = 'Giggle'
-    Bark = 'Bark'
+    def __str__(self) -> str:
+        return self.value
+

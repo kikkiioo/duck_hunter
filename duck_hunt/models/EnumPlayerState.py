@@ -1,6 +1,8 @@
-import enum
+from enum import Enum
 
 
-@enum
-class EnumPlayerState:
-    Nothing = 'None'
+class EnumPlayerState(str,Enum):
+    NOTHING = 'None'
+
+    def __str__(self) -> str:
+        return self.value

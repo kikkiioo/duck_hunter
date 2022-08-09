@@ -23,7 +23,7 @@ from sympy import false, true
 #model
 
 
-class EnumDogState(str, Enum):
+class EnumDogState(str,Enum):
     NOTHING = 'None'
     SNIFF = 'Sniff'
     SNIFF1 = 'Sniff1'

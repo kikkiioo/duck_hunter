@@ -7,4 +7,4 @@ from models.EnumDogState import EnumDogState
 @dataclass_json
 @dataclass
 class Dog(Actor):
-    state: EnumDogState.Nothing
+    state: EnumDogState = EnumDogState.NOTHING

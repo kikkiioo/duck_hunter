@@ -1,53 +1,26 @@
-import pygame
-from models.Dog import Dog
-import UIMainWindow
-
-
 class DogController:
 
-    def sniff(dogActor):
-        # time_last = time.time()
-        for j in range(4):
-            for i in UIMainWindow.dogDict["Sniff"]:
-                #screen.blit(i,(dogActor.Xpos,dogActor.Ypos))
-                # dt = time.time() - time_last
-                # time_last = time.time()
-                pygame.display.update()
-                dogActor.Xpos += 10 #*dt
-                pygame.time.wait(100)
-                UIMainWindow.displayGraphics()
-                
+    @staticmethod
+    def sniff(dogActor,dt):
+        dogActor.xPos +=  50 * dt
 
-        for l in range(4):
-            for k in UIMainWindow.dogDict["Sniff1"]:
-                #screen.blit(k,(dogActor.Xpos,dogActor.Ypos))
-                pygame.display.update()
-                pygame.time.wait(100)
-                UIMainWindow.displayGraphics()
+    @staticmethod
+    def jumpUp(dogActor, dt):
+        dogActor.xPos += 45 * dt
+        dogActor.yPos -= 55 * dt
+
+    @staticmethod
+    def jumpDown(dogActor, dt):
+        dogActor.xPos += 15 * dt
+        dogActor.yPos += 30 * dt
+
+    @staticmethod
+    def catchUp(dogActor, dt):
+        dogActor.yPos -= 10 * dt
+
+    @staticmethod
+    def catchDown(dogActor, dt):
+        dogActor.yPos += 10 * dt
 
 
-    def jump(dogActor):
-        
-        i = UIMainWindow.dogDict["Jump"][0]
-        #screen.blit(i,(dogActor.Xpos,dogActor.Ypos))
-        pygame.display.update()
-        pygame.time.wait(400)
-        UIMainWindow.displayGraphics()
-        for i in range(5):
-            i = UIMainWindow.dogDict["Jump"][1]
-            #screen.blit(i,(dogActor.Xpos,dogActor.Ypos))
-            pygame.display.update()
-            dogActor.Xpos+=15
-            dogActor.Ypos-=30
-            pygame.time.wait(60)
-            UIMainWindow.displayGraphics()
-            
-        for i in range(4):
-            i = UIMainWindow.dogDict["Jump"][2]
-            #screen.blit(i,(dogActor.Xpos,dogActor.Ypos))
-            pygame.display.update()
-            dogActor.Xpos+=15
-            dogActor.Ypos+=30
-            pygame.time.wait(100)
-            UIMainWindow.displayGraphics()
-            
+

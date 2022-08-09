@@ -1,11 +1,10 @@
+from enum import Enum
 
-import enum
+class EnumDuckState(str, Enum):
+    NOTHING = 'None'
+    RIGHTFLY = 'RightFly'
+    LEFTFLY = 'LeftFly'
+    DIE = 'Die'
 
-import enum
-
-@enum
-class EnumDuckState:
-    Nothing = 'None'
-    Fly = 'Fly'
-    Die = 'Die'
-    Quack = 'Quack'
+    def __str__(self) -> str:
+        return self.value
