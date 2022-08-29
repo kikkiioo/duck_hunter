@@ -8,8 +8,8 @@ class DuckController:
         # duckActor.xPos += stepx
         # duckActor.yPos += stepy
 
-        duckActor.xPos += 30 * dt
-        duckActor.yPos -= 30 * dt
+        duckActor.xPos += 50 * dt
+        duckActor.yPos -= 50 * dt
 
     @staticmethod
     def flyLeft(duckActor, dt):
@@ -18,10 +18,10 @@ class DuckController:
         # duckActor.xPos += stepx
         # duckActor.yPos += stepy
 
-        duckActor.xPos -= 30 * dt
-        duckActor.yPos += 30 * dt
+        duckActor.xPos -= 50 * dt
+        duckActor.yPos += 50 * dt
 
     @staticmethod
-    def die(duckActor, dt):
+    def fall(duckActor, dt):
 
-        duckActor.yPos += 30 * dt
+        duckActor.yPos += 60 * dt

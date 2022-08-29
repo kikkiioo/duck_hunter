@@ -12,3 +12,6 @@ class Duck(Actor):
     flyingDirection: str = "left"
     endXpos: int = 0
     endYpos: int = 0
+    duckType: str = "black"
+    score: int = 0
+    frame: int = 0

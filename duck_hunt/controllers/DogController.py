@@ -2,7 +2,7 @@ class DogController:
 
     @staticmethod
     def sniff(dogActor,dt):
-        dogActor.xPos +=  50 * dt
+        dogActor.xPos +=  60 * dt
 
     @staticmethod
     def jumpUp(dogActor, dt):

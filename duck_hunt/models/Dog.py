@@ -8,3 +8,4 @@ from models.EnumDogState import EnumDogState
 @dataclass
 class Dog(Actor):
     state: EnumDogState = EnumDogState.NOTHING
+    frame: int = 0

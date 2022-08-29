@@ -7,7 +7,7 @@ from models.EnumPlayerState import EnumPlayerState
 @dataclass_json
 @dataclass 
 class Player(Actor):
-    #state: EnumPlayerState.Nothing
+    state: EnumPlayerState = EnumPlayerState.NOTHING
     shotCount: int = 0
     hitCount: int = 0
     successShotCount: int = 0

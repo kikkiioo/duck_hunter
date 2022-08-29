@@ -1,13 +1,16 @@
+import json
 from time import time
 import pygame
 import time
+from pydantic.dataclasses import dataclass
+from dataclasses_json import dataclass_json
 
 
 from controllers.GameController import GameController
 from models.Game import Game
 from models.EnumDuckState import EnumDuckState
 from models.EnumDogState import EnumDogState
-from models.BlackDuck import BlackDuck
+from models.Duck import Duck
 from models.Dog import Dog
 from models.Player import Player
 
@@ -28,6 +31,7 @@ class UIMainWindow:
         self.level_rect = self.level_surf.get_rect(topleft=(95, 388))
         self.score_surf = self.test_font.render('', True, 'white')
         self.score_rect = self.level_surf.get_rect(topleft=(470, 419))
+        self.pause = pygame.image.load('graphics/pause.png').convert_alpha()
 
         # Dog animations
         self.sniff1 = pygame.image.load('graphics/dog/sniff1.png').convert_alpha()
@@ -36,14 +40,17 @@ class UIMainWindow:
         self.sniff4 = pygame.image.load('graphics/dog/sniff4.png').convert_alpha()
         self.sniff5 = pygame.image.load('graphics/dog/sniff5.png').convert_alpha()
         self.sniff6 = pygame.image.load('graphics/dog/sniff6.png').convert_alpha()
-        self.jump1 = pygame.image.load('graphics/dog/jump1.png').convert_alpha()
+        self.look = pygame.image.load('graphics/dog/jump1.png').convert_alpha()
         self.jump2 = pygame.image.load('graphics/dog/jump2.png').convert_alpha()
         self.jump3 = pygame.image.load('graphics/dog/jump3.png').convert_alpha()
         self.catch = pygame.image.load('graphics/dog/catch.png').convert_alpha()
         self.dogDict = {"Sniff": [self.sniff1, self.sniff2, self.sniff3, self.sniff4],
                         "Sniff1": [self.sniff5, self.sniff6],
-                        "Jump": [self.jump1, self.jump2, self.jump3],
-                        "Catch": [self.catch]}
+                        "Look":[self.look],
+                        "JumpUp": [ self.jump2],
+                        "JumpDown": [self.jump3],
+                        "CatchUp": [self.catch],
+                        "CatchDown": [self.catch]}
 
         # Duck animations
         self.rightFlyBlack1 = pygame.image.load('graphics/duck/blackDuck/fly1.png').convert_alpha()
@@ -61,7 +68,8 @@ class UIMainWindow:
                          animation_duration=0, animation_start_time = 0)
 
         self.blackDuckDict = {"RightFly": [self.rightFlyBlack1, self.rightFlyBlack2, self.rightFlyBlack3],
-                              "Die": [self.blackDuckDie1, self.blackDuckDie2, self.blackDuckDie3],
+                              "Die": [self.blackDuckDie1],
+                              "Fall": [self.blackDuckDie2, self.blackDuckDie3],
                               "LeftFly": [self.leftFlyBlack1, self.leftFlyBlack2, self.leftFlyBlack3]}
 
     def start_main_loop(self):
@@ -71,8 +79,10 @@ class UIMainWindow:
         self.generateSprites(self)
 
         is_running = True
+        paused = False
         time_last = time.time()
         self.game.animation_start_time = time.time()
+
         while is_running:
 
             dt = time.time() - time_last
@@ -83,60 +93,34 @@ class UIMainWindow:
                     is_running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
-                    GameController.checkCollision(self, self.game, x, y)
-
+                    GameController.checkCollision(self.game, x, y)
+                    self.displayScore(self)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
+                        self.game.actors.clear()
                         self.newGame(self)
+                    if event.key == pygame.K_p:
+                        paused = True
+                        self.saveGame(self)
+                    if event.key == pygame.K_r:
+                        paused = False
+                        self.resumeGame(self)
+
 
             #GameController.updateSprites(self.game)  # update ducks !
 
-            GameController.updateRender(self, self.game)
-            GameController.updateControllers(self.game, dt)
-            pygame.display.flip()
-            self.clock.tick(60)
-            self.displayGraphics(self)
-            pygame.display.update()
+            if not paused:
+                self.render(self)
+                GameController.updateRender(self.game, dt)
+                GameController.updateControllers(self.game, dt)
+                pygame.display.flip()
+
+
+                self.displayGraphics(self)
+                pygame.display.update()
 
         pygame.quit()
 
-    @staticmethod
-    def draw_Dog(self, actor, frame):
-
-        if actor.state == 'Sniff':
-            self.screen.blit(self.dogDict["Sniff"][frame], (actor.xPos, actor.yPos))
-
-        if actor.state == 'Sniff1':
-            self.screen.blit(self.dogDict["Sniff1"][frame], (actor.xPos, actor.yPos))
-
-        if actor.state == 'Look':
-            self.screen.blit(self.dogDict["Jump"][frame], (actor.xPos, actor.yPos))
-
-        if actor.state == 'JumpUp':
-            self.screen.blit(self.dogDict["Jump"][frame], (actor.xPos, actor.yPos))
-
-        if actor.state == 'JumpDown':
-            self.screen.blit(self.dogDict["Jump"][frame], (actor.xPos, actor.yPos))
-
-        if actor.state == 'CatchUp':
-            self.screen.blit(self.dogDict["Catch"][frame], (actor.xPos, actor.yPos))
-
-        if actor.state == 'CatchDown':
-            self.screen.blit(self.dogDict["Catch"][frame], (actor.xPos, actor.yPos))
-
-    @staticmethod
-    def draw_Duck(self, actor, frame):
-        if isinstance(actor, BlackDuck):
-            if actor.state == "RightFly":
-                self.screen.blit(self.blackDuckDict["RightFly"][frame], (actor.xPos, actor.yPos))
-
-            if actor.state == "LeftFly":
-                self.screen.blit(self.blackDuckDict["LeftFly"][frame], (actor.xPos, actor.yPos))
-
-            if actor.state == "Die":
-                self.screen.blit(self.blackDuckDict["Die"][frame], (actor.xPos, actor.yPos))
-
-    @staticmethod
     def displayGraphics(self):
         self.screen.blit(self.background_surf, (0, 0))
         pygame.draw.rect(self.screen, 'black', (86, 387, 35, 18), 200)
@@ -149,23 +133,60 @@ class UIMainWindow:
     def generateSprites(self):
 
         player = Player(xPos=0, yPos=0, shotCount=3, hitCount=0, successShotCount=0)
-        dogActor = Dog(xPos=10, yPos=320, state=EnumDogState.SNIFF)
-        duckActor = BlackDuck(xPos=150, yPos=270, flyingSpeed=4.5, flyingDirection="right", endXpos=550, endYpos=0,
-                                   blackScore=500, state=EnumDuckState.NOTHING)
+        dogActor = Dog(xPos=10, yPos=320, state=EnumDogState.SNIFF, frame = 0 )
+        duckActor = Duck(xPos=150, yPos=270, flyingSpeed=4.5, flyingDirection="right", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0)
+        duckActor2 = Duck(xPos=200, yPos=270, flyingSpeed=4.5, flyingDirection="right", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0 )
         self.game.actors.append(player)
         self.game.actors.append(dogActor)
         self.game.actors.append(duckActor)
+        self.game.actors.append(duckActor2)
 
-    @staticmethod
-    def newGame(self):
-        self.game = Game()
-        self.generateSprites(self)
-        self.start_main_loop(self)
+
+    def render(self):
+        for actor in self.game.actors:
+            if actor.state == "None":
+                continue
+
+            if isinstance(actor,Dog):
+                state_png = self.dogDict[actor.state]
+                self.screen.blit(state_png[int(actor.frame)],(actor.xPos,actor.yPos))
+
+            if isinstance(actor,Duck):
+                state_png = self.blackDuckDict[actor.state]
+                self.screen.blit(state_png[int(actor.frame)],(actor.xPos,actor.yPos))
 
     def displayScore(self):
         pygame.draw.rect(self.screen, 'black', (410, 419, 108, 18), 200)
         self.score_surf = self.test_font.render(str(self.game.score), True, 'white')
         self.screen.blit(self.score_surf, self.score_rect)
+
+    def newGame(self):
+
+        self.generateSprites(self)
+        self.start_main_loop(self)
+
+    def saveGame(self):
+        self.screen.blit(self.pause, (-20, 0))
+        pygame.display.flip()
+        json_file = self.game.to_json()
+        with open("data.json", "w") as outfile:
+            outfile.write(json_file)
+        for actor in self.game.actors:
+            if isinstance(actor,Duck):
+                actor.state = EnumDuckState.NOTHING
+            if isinstance(actor,Dog):
+                actor.state = EnumDogState.NOTHING
+
+
+
+    def resumeGame(self):
+        with open("data.json", 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        game_data = json.dumps(data)
+        self.game.from_json(game_data)
+
+
+
 
 
 window = GameController(UIMainWindow)

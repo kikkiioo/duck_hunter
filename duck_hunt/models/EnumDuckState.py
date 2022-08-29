@@ -5,6 +5,7 @@ class EnumDuckState(str, Enum):
     RIGHTFLY = 'RightFly'
     LEFTFLY = 'LeftFly'
     DIE = 'Die'
+    FALL = 'Fall'
 
     def __str__(self) -> str:
         return self.value
