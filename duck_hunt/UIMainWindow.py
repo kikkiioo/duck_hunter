@@ -149,7 +149,8 @@ class UIMainWindow:
     def saveGame(self):
         self.screen.blit(self.pause, (-20, 0))
         pygame.display.flip()
-        json_file = self.game.to_json()
+        savedGame = self.game
+        json_file = savedGame.to_json()
         with open("data.json", "w") as outfile:
             outfile.write(json_file)
         for actor in self.game.actors:
@@ -161,8 +162,9 @@ class UIMainWindow:
     def resumeGame(self):
         with open("data.json", 'r', encoding='utf-8') as f:
             data = f.read()
-
+        print(data)
         self.game.from_json(data)
+
 
 window = UIMainWindow()
 window.start_main_loop()

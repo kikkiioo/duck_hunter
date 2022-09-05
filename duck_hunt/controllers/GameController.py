@@ -19,9 +19,9 @@ class GameController:
 
     def updateDucks(game):
         flying_direction = rand.randint(0,1)
-        duckActor = Duck(xPos=150, yPos=270, flyingSpeed=4.5, endXpos=550, endYpos=0,flyingDirection="up",
+        duckActor = Duck(xPos=150, yPos=270, actorType = 'Duck', flyingSpeed=4.5, endXpos=550, endYpos=0,flyingDirection="up",
                          duckType="black", score=500, frame=0)
-        duckActor2 = Duck(xPos=150, yPos=270, flyingSpeed=4.5, endXpos=550, endYpos=0,flyingDirection = "up",
+        duckActor2 = Duck(xPos=150, yPos=270,actorType = 'Duck', flyingSpeed=4.5, endXpos=550, endYpos=0,flyingDirection = "up",
                          duckType="black", score=500, frame=0, state = "RightFly")
 
         if flying_direction == 0:
@@ -206,9 +206,9 @@ class GameController:
 
     def generateActors(game):
 
-        dogActor = Dog(xPos=10, yPos=320, state=EnumDogState.SNIFF, frame = 0 )
-        duckActor = Duck(xPos=150, yPos=270, flyingSpeed=4.5, flyingDirection="up", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0)
-        duckActor2 = Duck(xPos=200, yPos=270, flyingSpeed=4.5, flyingDirection="up", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0 )
+        dogActor = Dog(xPos=10, yPos=320, actorType = 'Dog',state=EnumDogState.SNIFF, frame = 0 )
+        duckActor = Duck(xPos=150, yPos=270, actorType = 'Duck',flyingSpeed=4.5, flyingDirection="up", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0)
+        duckActor2 = Duck(xPos=200, yPos=270, actorType = 'Duck',flyingSpeed=4.5, flyingDirection="up", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0 )
 
         game.actors.append(dogActor)
         game.actors.append(duckActor)
