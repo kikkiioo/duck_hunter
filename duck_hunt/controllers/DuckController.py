@@ -7,9 +7,12 @@ class DuckController:
         # stepx,stepy = (dx/25., dy/25. )
         # duckActor.xPos += stepx
         # duckActor.yPos += stepy
-
-        duckActor.xPos += 50 * dt
-        duckActor.yPos -= 50 * dt
+        if duckActor.flyingDirection == "up":
+            duckActor.xPos += 50 * dt
+            duckActor.yPos -= 50 * dt
+        if duckActor.flyingDirection == "down":
+            duckActor.xPos -= 50 * dt
+            duckActor.yPos += 50 * dt
 
     @staticmethod
     def flyLeft(duckActor, dt):
@@ -17,9 +20,13 @@ class DuckController:
         # stepx,stepy = (dx/25., dy/25. )
         # duckActor.xPos += stepx
         # duckActor.yPos += stepy
+        if duckActor.flyingDirection == "up":
+            duckActor.xPos -= 50 * dt
+            duckActor.yPos -= 50 * dt
 
-        duckActor.xPos -= 50 * dt
-        duckActor.yPos += 50 * dt
+        if duckActor.flyingDirection == "down":
+            duckActor.xPos -= 50 * dt
+            duckActor.yPos += 50 * dt
 
     @staticmethod
     def fall(duckActor, dt):

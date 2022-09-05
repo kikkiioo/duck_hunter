@@ -12,7 +12,7 @@ from models.EnumDuckState import EnumDuckState
 from models.EnumDogState import EnumDogState
 from models.Duck import Duck
 from models.Dog import Dog
-from models.Player import Player
+
 
 
 class UIMainWindow:
@@ -73,10 +73,10 @@ class UIMainWindow:
                               "LeftFly": [self.leftFlyBlack1, self.leftFlyBlack2, self.leftFlyBlack3]}
 
     def start_main_loop(self):
-        self.__init__(self)
-        self.displayGraphics(self)
+
+        self.displayGraphics()
         pygame.display.update()
-        self.generateSprites(self)
+        GameController.generateActors(self.game)
 
         is_running = True
         paused = False
@@ -94,29 +94,23 @@ class UIMainWindow:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
                     GameController.checkCollision(self.game, x, y)
-                    self.displayScore(self)
+                    self.displayScore()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
                         self.game.actors.clear()
-                        self.newGame(self)
+                        self.newGame()
                     if event.key == pygame.K_p:
                         paused = True
-                        self.saveGame(self)
+                        self.saveGame()
                     if event.key == pygame.K_r:
                         paused = False
-                        self.resumeGame(self)
-
-
-            #GameController.updateSprites(self.game)  # update ducks !
+                        self.resumeGame()
 
             if not paused:
-                self.render(self)
-                GameController.updateRender(self.game, dt)
                 GameController.updateControllers(self.game, dt)
-                pygame.display.flip()
-
-
-                self.displayGraphics(self)
+                self.displayGraphics()
+                self.render()
+                GameController.updateActors(self.game, dt)
                 pygame.display.update()
 
         pygame.quit()
@@ -125,21 +119,10 @@ class UIMainWindow:
         self.screen.blit(self.background_surf, (0, 0))
         pygame.draw.rect(self.screen, 'black', (86, 387, 35, 18), 200)
         self.screen.blit(self.level_surf, self.level_rect)
-        self.displayScore(self)
+        self.displayScore()
 
     def displayGround(self):
         self.screen.blit(self.ground_surf, (0, 0))
-
-    def generateSprites(self):
-
-        player = Player(xPos=0, yPos=0, shotCount=3, hitCount=0, successShotCount=0)
-        dogActor = Dog(xPos=10, yPos=320, state=EnumDogState.SNIFF, frame = 0 )
-        duckActor = Duck(xPos=150, yPos=270, flyingSpeed=4.5, flyingDirection="right", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0)
-        duckActor2 = Duck(xPos=200, yPos=270, flyingSpeed=4.5, flyingDirection="right", endXpos=550, endYpos=0,duckType = "black", score = 500, frame = 0 )
-        self.game.actors.append(player)
-        self.game.actors.append(dogActor)
-        self.game.actors.append(duckActor)
-        self.game.actors.append(duckActor2)
 
 
     def render(self):
@@ -161,9 +144,7 @@ class UIMainWindow:
         self.screen.blit(self.score_surf, self.score_rect)
 
     def newGame(self):
-
-        self.generateSprites(self)
-        self.start_main_loop(self)
+        self.start_main_loop()
 
     def saveGame(self):
         self.screen.blit(self.pause, (-20, 0))
@@ -177,17 +158,11 @@ class UIMainWindow:
             if isinstance(actor,Dog):
                 actor.state = EnumDogState.NOTHING
 
-
-
     def resumeGame(self):
         with open("data.json", 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        game_data = json.dumps(data)
-        self.game.from_json(game_data)
+            data = f.read()
 
+        self.game.from_json(data)
 
-
-
-
-window = GameController(UIMainWindow)
-window.startGame()
+window = UIMainWindow()
+window.start_main_loop()
