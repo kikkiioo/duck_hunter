@@ -7,6 +7,7 @@ from dataclasses_json import dataclass_json
 
 
 from controllers.GameController import GameController
+from models.EnumActorType import EnumActorType
 from models.Game import Game
 from models.EnumDuckState import EnumDuckState
 from models.EnumDogState import EnumDogState
@@ -162,8 +163,15 @@ class UIMainWindow:
     def resumeGame(self):
         with open("data.json", 'r', encoding='utf-8') as f:
             data = f.read()
-        print(data)
-        self.game.from_json(data)
+
+        self.game = Game.from_json(data)
+        self.game.actors = []
+        dict_game_state = json.loads(data)
+        for dict_actor in dict_game_state['actors']:
+            if dict_actor['actorType'] == EnumActorType.DUCK:
+                self.game.actors.append(Duck.from_dict(dict_actor))
+            if dict_actor['actorType'] == EnumActorType.DOG:
+                self.game.actors.append(Dog.from_dict(dict_actor))
 
 
 window = UIMainWindow()

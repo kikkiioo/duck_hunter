@@ -12,43 +12,26 @@ from models.EnumDogState import EnumDogState
 
 class GameController:
 
-
+    @staticmethod
     def updateScore(game, score):
         game.score += score
 
-
+    @staticmethod
     def updateDucks(game):
-        flying_direction = rand.randint(0,1)
-        duckActor = Duck(xPos=150, yPos=270, actorType = 'Duck', flyingSpeed=4.5, endXpos=550, endYpos=0,flyingDirection="up",
-                         duckType="black", score=500, frame=0)
-        duckActor2 = Duck(xPos=150, yPos=270,actorType = 'Duck', flyingSpeed=4.5, endXpos=550, endYpos=0,flyingDirection = "up",
-                         duckType="black", score=500, frame=0, state = "RightFly")
-
-        if flying_direction == 0:
-
-            duckActor.state = "LeftFly"
-            duckActor.xPos = rand.randint(0, 500)
-
-
-        if flying_direction == 1:
-
-            duckActor.state = "RightFly"
-            duckActor.xPos = rand.randint(0, 500)
-
-        duckCount = 0
+        flying_direction = rand.randint(0, 1)
+        print(flying_direction)
         for actor in game.actors:
             if isinstance(actor, Duck):
-                duckCount+=1
+                if actor.state == EnumDuckState.NOTHING:
+                    actor.xPos = rand.randint(0, 500)
+                    if flying_direction == 0:
+                        actor.state = EnumDuckState.LEFTFLY
+                        print(actor.state)
+                    if flying_direction == 1:
 
-        if duckCount == 1:
-            game.actors.append(duckActor)
-        if duckCount == 0:
-            game.actors.append(duckActor)
-            game.actors.append(duckActor2)
+                        actor.state = EnumDuckState.RIGHTFLY
 
-
-
-
+    @staticmethod
     def updateControllers(game,dt):
 
         for actor in game.actors:
@@ -69,6 +52,7 @@ class GameController:
             if actor.state == EnumDogState.CATCHDOWN:
                 DogController.catchDown(actor, dt)
 
+    @staticmethod
     def updateActors( game, dt):
 
         for actor in game.actors:
@@ -182,14 +166,14 @@ class GameController:
                     if actor.yPos > 280:
                         actor.state = EnumDuckState.NOTHING
                         duckActor = actor
-                        duckActor.state = EnumDuckState.RIGHTFLY
-                        duckActor.xPos = rand.randint(0, 500)
-                        game.actors.remove(duckActor)
+
+
                         for actor in game.actors:
                             if isinstance(actor, Dog):
                                 actor.xPos = duckActor.xPos
                                 actor.state = EnumDogState.CATCHUP
 
+    @staticmethod
     def checkCollision( game, mouseX, mouseY):
 
         for actor in game.actors:
@@ -204,6 +188,7 @@ class GameController:
                     actor.frame = 0
                     GameController.updateScore(game, actor.score)
 
+    @staticmethod
     def generateActors(game):
 
         dogActor = Dog(xPos=10, yPos=320, actorType = 'Dog',state=EnumDogState.SNIFF, frame = 0 )
